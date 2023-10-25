@@ -1,0 +1,1 @@
+This is just a small AI made by CMeriam and Hazrtine (Jimmy).
