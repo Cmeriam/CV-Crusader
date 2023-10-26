@@ -1,20 +1,15 @@
-package JobScrapping
-
+import jdk.javadoc.doclet.Reporter
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import org.junit.Test
 import org.openqa.selenium.By
+import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.Keys
 import org.openqa.selenium.WebDriver
-import org.openqa.selenium.WebElement
 import org.openqa.selenium.chrome.ChromeDriver
-import org.openqa.selenium.JavascriptExecutor
-import org.apache.poi.xssf.usermodel.XSSFSheet
-import org.apache.poi.xssf.usermodel.XSSFWorkbook
-import org.testng.Reporter
 import org.testng.annotations.AfterTest
 import org.testng.annotations.BeforeTest
-import org.testng.annotations.Test
 import java.io.File
 import java.io.FileOutputStream
-import java.lang.Exception
 
 class NewIndeed {
     private var driver: WebDriver? = null
@@ -25,7 +20,7 @@ class NewIndeed {
         driver?.findElement(By.id("text-input-what"))?.sendKeys("RestAssured")
         val whereBox = driver?.findElement(By.id("text-input-where"))
         whereBox?.click()
-        whereBox?.sendKeys(Keys.CONTROL + "a")
+        whereBox?.sendKeys(Keys.chord(Keys.CONTROL, "a"))
         whereBox?.sendKeys(Keys.DELETE)
         Thread.sleep(2000)
 
@@ -49,7 +44,7 @@ class NewIndeed {
         println("Jobs Count: " + driver?.findElement(By.id("searchCount"))?.text)
         val totalJobs = driver?.findElement(By.id("searchCount"))?.text?.split(" ")?.get(3)
         println(totalJobs)
-        val jobs = driver?.findElements(By.className("slider_container"))
+        val jobs = driver!!.findElements(By.className("slider_container"))
         val jobsPerPage = jobs?.size ?: 0
         println(jobsPerPage)
 
@@ -85,7 +80,7 @@ class NewIndeed {
             driver?.switchTo()?.frame(wFrame)
             Thread.sleep(2000)
             val m = driver?.findElement(By.xpath("//body"))
-            val m1 = m?.findElement(By.className("jobsearch-JobComponent-embeddedHeader"))
+            val m1 = m!!.findElement(By.className("jobsearch-JobComponent-embeddedHeader"))
 
             val jobTitleText = m1?.findElement(By.xpath("//div/h1[contains(@class,'icl-u-xs-mb')]"))?.text
             val jobCompanyName = m1?.findElement(By.xpath("//div[contains(@class,'icl-u-lg-mr')]"))?.text
@@ -101,8 +96,9 @@ class NewIndeed {
                     }
                 }
             }
-
-            val isPresent = m1?.findElements(By.xpath("//div[contains(@class,'jobsearch-JobMetadataHeader-item ')]"))?.size ?: 0 > 0
+            val isPresent =
+                (m1?.findElements(By.xpath("//div[contains(@class,'jobsearch-JobMetadataHeader-item ')]"))?.size
+                    ?: 0) > 0
             if (isPresent) {
                 val isChildPresent = m1.findElement(By.xpath("//div[contains(@class,'jobsearch-JobMetadataHeader-item ')]"))
                         .findElements(By.xpath("//span[contains(@class,'icl-u-xs-mt')]")).size > 0
@@ -149,7 +145,10 @@ class NewIndeed {
 
     @BeforeTest
     fun beforeTest() {
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\Swati\\chromedriver.exe")
+        System.setProperty(
+            "webdriver.chrome.driver",
+            "C:\\Users\\Swati\\chromedriver.exe"
+        ) //another chromedriver.exe on anyone's computer will work here
         driver = ChromeDriver()
         driver?.get("https://www.indeed.com")
         driver?.manage()?.window()?.maximize()
