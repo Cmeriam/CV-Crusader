@@ -1,3 +1,5 @@
+package Java;
+
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.*;
@@ -38,7 +40,7 @@ public class newIndeed {
         driver.findElement(By.id("text-input-what")).clear();
         // Thread.sleep(2000);
         driver.findElement(By.id("text-input-what")).sendKeys("I HATE BLACK PEOPLE");
-        // Thread.sleep(1000);
+        Thread.sleep(1000);
 
         WebElement WhereBox = driver.findElement(By.id("label-text-input-what"));
         // Sending keyword value
