@@ -1,4 +1,4 @@
-import jdk.javadoc.doclet.Reporter
+
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.junit.Test
 import org.openqa.selenium.By
@@ -38,7 +38,7 @@ class NewIndeed {
         val js = driver as JavascriptExecutor
         js.executeScript("window.scrollBy(0,300)")
 
-        Reporter.log("Scrolled page")
+        org.testng.Reporter.log("Scrolled page")
 
         println("Page Title:" + driver?.title)
         println("Jobs Count: " + driver?.findElement(By.id("searchCount"))?.text)
@@ -96,23 +96,8 @@ class NewIndeed {
                     }
                 }
             }
-            val isPresent =
-                (m1?.findElements(By.xpath("//div[contains(@class,'jobsearch-JobMetadataHeader-item ')]"))?.size
-                    ?: 0) > 0
-            if (isPresent) {
-                val isChildPresent = m1.findElement(By.xpath("//div[contains(@class,'jobsearch-JobMetadataHeader-item ')]"))
-                        .findElements(By.xpath("//span[contains(@class,'icl-u-xs-mt')]")).size > 0
-                if (isChildPresent) {
-                    val jobCategory = m1.findElement(By.xpath("//div[contains(@class,'jobsearch-JobMetadataHeader-item ')]"))
-                            .findElement(By.xpath("//span[contains(@class,'icl-u-xs-mt')]")).text
-                    println("Job Category is: $jobCategory")
-                } else {
-                    println("Job Category is not available")
-                }
-            } else {
-                println("Job Category is not available")
-            }
-
+            val jobCategory = m1.findElement(By.xpath("//div[contains(@class,'jobsearch-JobMetadataHeader-item ')]"))
+                .findElement(By.xpath("//span[contains(@class,'icl-u-xs-mt')]")).text
             val jobDetail = m.findElement(By.className("jobsearch-JobComponent-embeddedBody"))
             jobDetail.click()
             val jobDescription = jobDetail
@@ -134,7 +119,7 @@ class NewIndeed {
         }
 
         try {
-            val excel = File("C:\\Users\\Swati\\Desktop\\RestAssured.xlsx")
+            val excel = File("C:\\Users\\Hazrtine\\Downloads\\TestExcel.xlsx")
             excel.createNewFile()
             val fos = FileOutputStream(excel)
             wb.write(fos)
@@ -147,7 +132,7 @@ class NewIndeed {
     fun beforeTest() {
         System.setProperty(
             "webdriver.chrome.driver",
-            "C:\\Users\\Swati\\chromedriver.exe"
+            "C:\\Users\\Hazrtine\\Downloads\\chromedriver.exe"
         ) //another chromedriver.exe on anyone's computer will work here
         driver = ChromeDriver()
         driver?.get("https://www.indeed.com")
